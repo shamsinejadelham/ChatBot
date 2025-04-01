@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>چت‌بات C#</title>
+    <style>
+        #chat { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll; }
+        .user { color: blue; }
+        .bot { color: green; }
+    </style>
+</head>
+<body>
+    <h1>چت‌بات C# من</h1>
+    <p>سوالای C#ت رو بپرس، مثلاً "if چیه؟" یا "حلقه for چطوره؟"</p>
+    <div id="chat"></div>
+    <input id="input" type="text" placeholder="سوالتو بپرس...">
+    <button onclick="sendMessage()">ارسال</button>
+
+    <script>
+        async function sendMessage() {
+            let input = document.getElementById("input").value;
+            document.getElementById("chat").innerHTML += `<p class="user">تو: ${input}</p>`;
+            let response = await fetch(`/chat?q=${input}`);
+            let text = await response.text();
+            document.getElementById("chat").innerHTML += `<p class="bot">${text}</p>`;
+            document.getElementById("input").value = "";
+        }
+        document.getElementById("input").addEventListener("keypress", (e) => {
+            if (e.key === "Enter") sendMessage();
+        });
+    </script>
+</body>
+</html>
